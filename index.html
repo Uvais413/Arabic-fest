@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مهرجان الضاد - النتائج</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body oncontextmenu="return false;">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-kaaba me-2"></i> مهرجان الضاد
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 p-2">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="showSection('home')">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('student-results')">نتائج الطلاب</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('program-results')">نتائج البرامج</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('admin')">الإدارة</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero-section">
+        <div class="container">
+            <h1 class="display-4">مهرجان الضاد</h1>
+            <p class="lead">_معراج إلى النجاد_</p>
+            <small>تحت إشراف جمعية اللغة العربية - قسم التمهيدية</small>
+        </div>
+    </header>
+
+    <div class="container my-4">
+        
+        <!-- HOME SECTION -->
+        <div id="home" class="content-section">
+            <!-- ABOUT SECTION -->
+            <div class="alert alert-light border text-center mb-4">
+                <h5><i class="fas fa-info-circle text-success"></i> عن المهرجان</h5>
+                <p class="mb-2">
+                    في اليوم العالمي للغة العربية (18 ديسمبر) نقيم مهرجان اللغة العربية لطلاب المرحلة التمهيدية تحت رعاية نادي اللغة العربية N.S.A.
+                </p>
+                <p class="mb-2">
+                    هذا الموقع هو موقع نشر نتائج لبرامج مهرجان الضاد - معراج إلى النجاد، حيث يمكن للطلاب والفرق متابعة مشاركاتهم ونتائجهم في مختلف البرامج والمسابقات.
+                </p>
+                <p class="mb-0">
+                    يضم المهرجان عشرة برامج لغوية متنوعة: مباراة الكلمات، الخلاصة، المقالة، القصة القصيرة، الخط، الخطابة، الترجمة، المناظرة، صناعة المعجم، ولعبة المعاني؛ ويتنافس فيها فريق الطاء وفريق الصاد.
+                </p>
+            </div>
+
+            <!-- DASHBOARD ROW -->
+            <div class="row mb-4">
+                <!-- GROUP POINTS CHART -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-white fw-bold text-center">حالة النقاط (الفرق)</div>
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <div class="chart-container">
+                                <canvas id="groupChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EVENT STATUS + GROUP GRAND MARKS -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-white fw-bold text-center">حالة البرامج</div>
+                        <div class="card-body">
+                             <h3 class="text-center text-success mb-1" id="leading-group-name">...</h3>
+                             <p class="text-center text-muted mb-3">الفريق المتصدر</p>
+
+                             <!-- GROUP GRAND MARKS (TOP FIRST) -->
+                             <div id="group-ranking" class="mb-3"></div>
+
+                             <hr>
+                             <label>نسبة اكتمال النتائج:</label>
+                             <div class="progress mt-2" style="height: 25px;">
+                                <div id="event-progress-bar" class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">0%</div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOP STUDENTS -->
+            <div class="card">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-crown text-warning"></i> المتصدرون</span>
+                    <button class="btn btn-sm btn-outline-light" onclick="showSection('student-results')">عرض الكل</button>
+                </div>
+                <div class="card-body">
+                    <div id="top-students-list"></div>
+                    
+                    <!-- BUTTONS UNDER المتصدرون -->
+                    <div class="mt-3 text-center">
+                        <button class="btn btn-outline-success me-2" onclick="showSection('student-results')">
+                            Student Vise Result
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="showSection('program-results')">
+                            Item Vise Result
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- POSTERS SECTION -->
+            <div class="row mt-4" id="poster-section">
+                <div class="col-12 text-center text-muted mb-3">
+                    <p>Posters Area</p>
+                </div>
+
+                <!-- Poster 1 -->
+                <div class="col-md-4 mb-3">
+                    <a href="#" target="_blank" class="poster-link">
+                        <div class="poster-card">
+                            <img src="poster1.jpg" alt="Poster 1">
+                            <div class="poster-overlay">
+                                <span>ملصق ١</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Poster 2 -->
+                <div class="col-md-4 mb-3">
+                    <a href="#" target="_blank" class="poster-link">
+                        <div class="poster-card">
+                            <img src="poster2.jpg" alt="Poster 2">
+                            <div class="poster-overlay">
+                                <span>ملصق ٢</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Poster 3 -->
+                <div class="col-md-4 mb-3">
+                    <a href="#" target="_blank" class="poster-link">
+                        <div class="poster-card">
+                            <img src="poster3.jpg" alt="Poster 3">
+                            <div class="poster-overlay">
+                                <span>ملصق ٣</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- FEEDBACK BUTTON -->
+            <div class="text-center mt-4">
+                <a href="https://forms.google.com" target="_blank" class="btn btn-outline-success w-100">
+                    <i class="fas fa-comment-dots"></i> تقديم ملاحظات (Feedback)
+                </a>
+            </div>
+
+            <!-- CREDIT AT THE END OF HOME -->
+            <div class="text-center mt-4 text-muted small">
+                Developed and Designed by Uvais.
+            </div>
+        </div>
+
+        <!-- STUDENT RESULTS SECTION -->
+        <div id="student-results" class="content-section d-none">
+            <h3 class="text-center border-bottom pb-2 mb-3">نتائج الطلاب الفردية</h3>
+            <input type="text" id="search-student" class="form-control mb-3" placeholder="ابحث عن اسم الطالب..." onkeyup="filterStudents()">
+            
+            <div class="row" id="student-list-container"></div>
+        </div>
+
+        <!-- PROGRAM RESULTS SECTION -->
+        <div id="program-results" class="content-section d-none">
+            <h3 class="text-center border-bottom pb-2 mb-3">نتائج البرامج</h3>
+            <div class="row" id="program-list-container"></div>
+        </div>
+
+        <!-- ADMIN SECTION -->
+        <div id="admin" class="content-section d-none">
+            
+            <div id="admin-login" class="card p-4 mx-auto" style="max-width: 400px;">
+                <h4 class="text-center">تسجيل دخول المشرف</h4>
+                <div class="mb-3">
+                    <label>User ID</label>
+                    <input type="text" id="admin-user" class="form-control" dir="ltr">
+                </div>
+                <div class="mb-3">
+                    <label>Passcode</label>
+                    <input type="password" id="admin-pass" class="form-control" dir="ltr">
+                </div>
+                <button class="btn btn-success w-100" onclick="adminLogin()">دخول</button>
+                <p id="login-error" class="text-danger text-center mt-2 d-none">بيانات خاطئة</p>
+            </div>
+
+            <div id="admin-dashboard" class="d-none">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>لوحة التحكم</h4>
+                    <button class="btn btn-danger btn-sm" onclick="adminLogout()">خروج</button>
+                </div>
+
+                <!-- ADD RESULT -->
+                <div class="card mb-4">
+                    <div class="card-header bg-dark text-white">إضافة نتيجة جديدة</div>
+                    <div class="card-body">
+                        <form id="result-form" onsubmit="event.preventDefault(); addResult();">
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label>البرنامج</label>
+                                    <select id="res-program" class="form-select" required></select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>الطالب</label>
+                                    <select id="res-student" class="form-select" required></select>
+                                </div>
+                                <div class="col-4">
+                                    <label>المركز</label>
+                                    <select id="res-place" class="form-select">
+                                        <option value="-">-</option>
+                                        <option value="1st">الأول</option>
+                                        <option value="2nd">الثاني</option>
+                                        <option value="3rd">الثالث</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <label>الدرجة (Grade)</label>
+                                    <select id="res-grade" class="form-select">
+                                        <option value="-">-</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <label>النقاط (Mark)</label>
+                                    <input type="number" id="res-mark" class="form-control" value="0" step="0.5">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 mt-3">حفظ النتيجة</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- EVENT STATUS SWITCHES -->
+                <div class="card mb-4">
+                    <div class="card-header">حالة البرامج (Event Status)</div>
+                    <div class="card-body">
+                        <div id="event-status-list"></div>
+                    </div>
+                </div>
+
+                <!-- ENTERED RESULTS TABLE -->
+                <div class="card">
+                    <div class="card-header">النتائج المدخلة</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>البرنامج</th>
+                                        <th>الطالب</th>
+                                        <th>النقاط</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-results-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- STUDENT MODAL -->
+    <div class="modal fade" id="studentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="modal-student-name">اسم الطالب</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User" width="80">
+                        <h4 id="modal-total-mark" class="mt-2 text-warning fw-bold">0</h4>
+                        <span id="modal-group-name" class="badge bg-dark">الفريق</span>
+                    </div>
+                    <table class="table table-bordered text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>البرنامج</th>
+                                <th>المركز</th>
+                                <th>Grade</th>
+                                <th>Mark</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modal-results-body"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                    <button type="button" class="btn btn-primary" onclick="printStudentResult()">
+                        <i class="fas fa-print"></i> طباعة النتيجة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRINT AREA -->
+    <div id="print-area">
+        <div class="print-header">
+            <h2>مهرجان الضاد 2026</h2>
+            <p>معراج إلى النجاد - كشف الدرجات</p>
+        </div>
+
+        <div class="print-info">
+            <div><strong>الاسم:</strong> <span id="print-name"></span></div>
+            <div><strong>الفريق:</strong> <span id="print-group"></span></div>
+            <div><strong>الرقم:</strong> <span id="print-id"></span></div>
+        </div>
+
+        <table class="print-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>البرنامج</th>
+                    <th>المركز</th>
+                    <th>Grade</th>
+                    <th>Mark</th>
+                </tr>
+            </thead>
+            <tbody id="print-tbody"></tbody>
+        </table>
+
+        <div class="print-total-wrapper">
+            <h3 class="print-total">المجموع الكلي: <span id="print-total"></span></h3>
+            <p class="print-date">Generated on: <span id="print-date"></span></p>
+        </div>
+
+        <div class="print-footer">
+            <p>Developed By Uvais A.P</p>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

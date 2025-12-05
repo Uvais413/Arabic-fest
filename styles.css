@@ -1,0 +1,225 @@
+:root {
+    --primary-color: #198754; /* Green */
+    --secondary-color: #d4ac0d; /* Gold */
+    --bg-color: #f8f9fa;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--bg-color);
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+h1, h2, h3, .fest-title {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #198754 0%, #0f5132 100%);
+    color: white;
+    padding: 2rem 0;
+    border-bottom: 5px solid var(--secondary-color);
+    text-align: center;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.student-card {
+    cursor: pointer;
+    border-right: 4px solid var(--primary-color);
+}
+
+.nav-pills .nav-link.active {
+    background-color: var(--primary-color);
+}
+
+.nav-pills .nav-link {
+    color: #333;
+}
+
+.badge-custom {
+    font-size: 0.9em;
+    padding: 0.5em 0.8em;
+}
+
+.chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+}
+
+/* Posters */
+.poster-card {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.poster-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    display: block;
+}
+
+.poster-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.poster-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+.poster-overlay span {
+    color: #fff;
+    font-weight: 700;
+    font-family: 'Amiri', serif;
+    letter-spacing: 1px;
+}
+
+.poster-link {
+    text-decoration: none;
+}
+
+/* Group ranking in حالة البرامج */
+.group-ranking-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.95rem;
+}
+
+.group-ranking-item span:first-child {
+    font-weight: 600;
+}
+
+/* PRINT STYLES */
+#print-area {
+    display: none;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #print-area,
+    #print-area * {
+        visibility: visible;
+    }
+
+    #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+        font-family: 'Amiri', serif;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+}
+
+/* Print layout styling */
+.print-header {
+    text-align: center;
+    border-bottom: 2px solid #000;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    background: #0d6efd;
+    color: #ffffff;
+}
+
+.print-header h2 {
+    margin: 0;
+}
+
+.print-header p {
+    margin: 4px 0 0;
+    font-size: 0.95rem;
+}
+
+.print-info {
+    margin-bottom: 20px;
+    border: 2px solid #000;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    background: #f3f6ff;
+}
+
+.print-info strong {
+    color: #0d6efd;
+}
+
+.print-info span {
+    color: #0f5132;
+    font-weight: 700;
+}
+
+.print-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.print-table th,
+.print-table td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.print-table th {
+    background: #198754;
+    color: #ffffff;
+}
+
+.print-total-wrapper {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.print-total {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #d4ac0d;
+    margin-bottom: 5px;
+}
+
+.print-date {
+    font-size: 0.9rem;
+}
+
+.print-footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+.print-footer span {
+    font-weight: 700;
+    color: #0d6efd;
+}

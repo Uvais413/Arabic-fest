@@ -69,14 +69,16 @@ function showSection(sectionId) {
 
     // Activate proper nav link (even when called from JS)
     const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    // updated mapping to include 'group-students' and correct indexes
     const map = {
         'home': 0,
-        'student-results': 1,
-        'program-results': 2,
-        'admin': 3
+        'group-students': 1,
+        'student-results': 2,
+        'program-results': 3,
+        'admin': 4
     };
     const idx = map[sectionId];
-    if (navLinks[idx]) {
+    if (typeof idx !== 'undefined' && navLinks[idx]) {
         navLinks[idx].classList.add('active');
     } else if (typeof event !== 'undefined' && event.target && event.target.classList) {
         // fallback if triggered by click event
@@ -159,6 +161,35 @@ function renderDashboard() {
                 <span class="badge bg-success rounded-pill">${s.total}</span>
             </div>`;
     });
+
+    // render the group-wise full student list
+    renderAllStudentsGrouped();
+}
+
+// Render all students grouped by team into the new home card
+function renderAllStudentsGrouped() {
+    const container = document.getElementById('all-students-grouped-body');
+    if (!container) return;
+
+    let out = '';
+    GROUPS.forEach(group => {
+        const members = STUDENTS.filter(s => s.group === group.id);
+        out += `<div class="mb-3">
+                    <h6 class="mb-2" style="color:${group.color}; font-weight:700;">${group.name}</h6>
+                    <div class="row">`;
+        members.forEach(m => {
+            out += `<div class="col-12 col-sm-6 col-md-4 mb-2">
+                        <div class="p-2 border rounded d-flex justify-content-between align-items-center" style="background:#fff;">
+                            <div class="fw-semibold">${m.name}</div>
+                            <small class="text-muted">${m.id}</small>
+                        </div>
+                    </div>`;
+        });
+        out += `   </div>
+                </div>`;
+    });
+
+    container.innerHTML = out;
 }
 
 function getGroupName(code) {
@@ -339,11 +370,13 @@ function renderEventStatusAdmin() {
     const list = document.getElementById('event-status-list');
     list.innerHTML = '';
     PROGRAMS.forEach(p => {
+        // sanitize id to avoid spaces & invalid characters
+        const safeId = 'status-' + p.replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
         const checked = eventStatus[p] ? 'checked' : '';
         list.innerHTML += `
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="status-${p}" ${checked} onchange="toggleEventStatus('${p}')">
-                <label class="form-check-label" for="status-${p}">${p}</label>
+                <input class="form-check-input" type="checkbox" id="${safeId}" ${checked} onchange="toggleEventStatus('${p}')">
+                <label class="form-check-label" for="${safeId}">${p}</label>
             </div>`;
     });
 }
@@ -387,3 +420,34 @@ showSection('home');
 
 // Disable right click (extra safety)
 document.addEventListener('contextmenu', event => event.preventDefault());
+
+function goToGroupList() {
+    // Always go to HOME section first
+    showSection('home');
+
+    // Scroll to the group-wise card after home is visible
+    setTimeout(() => {
+        const el = document.getElementById('group-students'); // corrected id
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 100);
+}
+
+// Close offcanvas menu
+function closeOffcanvas() {
+    const offcanvasEl = document.getElementById('sideMenu');
+    if (offcanvasEl) {
+        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+        if (offcanvas) offcanvas.hide();
+    }
+}
+
+// Scroll to poster section
+function scrollToPoster() {
+    const el = document.getElementById('poster-section');
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+

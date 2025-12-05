@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مهرجان الضاد - النتائج</title>
+    <title>مهرجان الضاد</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -21,38 +21,80 @@
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
-        <div class="container">
+        <div class="container d-flex justify-content-between align-items-center">
             <a class="navbar-brand" href="#">
                 <i class="fas fa-kaaba me-2"></i> مهرجان الضاد
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <!-- Only Hamburger Menu Button -->
+            <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" aria-controls="sideMenu">
+                <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 p-2">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#" onclick="showSection('home')">الرئيسية</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('student-results')">نتائج الطلاب</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('program-results')">نتائج البرامج</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('admin')">الإدارة</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
+
+    <!-- OFFCANVAS HAMBURGER MENU -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">
+        <div class="offcanvas-header bg-success text-white">
+            <h5 class="offcanvas-title" id="sideMenuLabel">القائمة</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="list-group list-group-flush w-100">
+                <!-- Main Navigation Links -->
+                <li class="list-group-item">
+                    <a href="#" onclick="showSection('home'); closeOffcanvas();" class="text-decoration-none text-dark fw-semibold">
+                        <i class="fas fa-home me-2 text-success"></i> الرئيسية
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" onclick="showSection('group-students'); closeOffcanvas();" class="text-decoration-none text-dark fw-semibold">
+                        <i class="fas fa-users me-2 text-info"></i> الفريق
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" onclick="showSection('student-results'); closeOffcanvas();" class="text-decoration-none text-dark fw-semibold">
+                        <i class="fas fa-chart-bar me-2 text-primary"></i> نتائج الطلاب
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" onclick="showSection('program-results'); closeOffcanvas();" class="text-decoration-none text-dark fw-semibold">
+                        <i class="fas fa-award me-2 text-warning"></i> نتائج البرامج
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" onclick="showSection('admin'); closeOffcanvas();" class="text-decoration-none text-dark fw-semibold">
+                        <i class="fas fa-lock me-2 text-danger"></i> الإدارة
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <li class="list-group-item bg-light fw-semibold text-muted small py-2">
+                    روابط أخرى
+                </li>
+
+                <!-- Additional Links -->
+                
+                </li>
+                <li class="list-group-item">
+                    <a href="#" onclick="scrollToPoster(); closeOffcanvas();" class="text-decoration-none text-dark fw-semibold">
+                        <i class="fas fa-images me-2 text-info"></i> معرج الملصقات
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="https://forms.gle/f9WVydy6C8nBYGJN9" target="_blank" class="text-decoration-none text-dark fw-semibold">
+                        <i class="fas fa-comment-dots me-2 text-warning"></i> تقديم ملاحظات
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <!-- HERO -->
     <header class="hero-section">
         <div class="container">
             <h1 class="display-4">مهرجان الضاد</h1>
-            <p class="lead">_معراج إلى النجاد_</p>
-            <small>تحت إشراف جمعية اللغة العربية - قسم التمهيدية</small>
+            <p class="lead"><i>معراج إلى النجاد  </i> </p>
+            <small>تحت إشراف نادي اللغة العربية - لمرحلة التمهيدية</small>
         </div>
     </header>
 
@@ -109,10 +151,63 @@
                 </div>
             </div>
 
+            <!-- STUDENT NAME - GROUP WISE SECTION -->
+<!-- GROUP WISE STUDENT SECTION -->
+<div id="group-students" class="content-section d-none">
+    <h3 class="text-center border-bottom pb-2 mb-3">الطلاب حسب الفريق</h3>
+
+    <div class="row">
+
+        <!-- فريق الطاء -->
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-header bg-success text-white fw-bold">فريق الطاء</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>شهباس</b></li>
+                    <li class="list-group-item">هاشم شريف</li>
+                    <li class="list-group-item">محمد عاصف</li>
+                    <li class="list-group-item">صفوان</li>
+                    <li class="list-group-item">محمد أنشد</li>
+                    <li class="list-group-item">محمد شهل. تي.في</li>
+                    <li class="list-group-item">محمد نسيب</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- فريق الصاد -->
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-header bg-warning text-dark fw-bold">فريق الصاد</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>محمد سهل. ان</b></li>
+                    <li class="list-group-item">محمد أنسل</li>
+                    <li class="list-group-item">محمد إصلاح</li>
+                    <li class="list-group-item">الحافظ عبد الله</li>
+                    <li class="list-group-item">محمد مشال</li>
+                    <li class="list-group-item">محمد جلشاد</li>
+                    <li class="list-group-item">محمد نهال</li>
+                    <li class="list-group-item">سيّد محمد عادل</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+            <!-- ALL STUDENTS GROUP WISE (inserted before المتصدرون) -->
+            <div id="all-students-grouped" class="card mb-3">
+                <div class="card-header bg-info text-white fw-bold text-center">جميع الطلاب حسب الفريق</div>
+                <div class="card-body" id="all-students-grouped-body">
+                    <!-- Populated by script.js -->
+                </div>
+            </div>
+
             <!-- TOP STUDENTS -->
             <div class="card">
                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-crown text-warning"></i> المتصدرون</span>
+                    <span><i class="fas fa-crown text-warning"></i> نجوم بارزة</span>
                     <button class="btn btn-sm btn-outline-light" onclick="showSection('student-results')">عرض الكل</button>
                 </div>
                 <div class="card-body">
@@ -121,10 +216,10 @@
                     <!-- BUTTONS UNDER المتصدرون -->
                     <div class="mt-3 text-center">
                         <button class="btn btn-outline-success me-2" onclick="showSection('student-results')">
-                            Student Vise Result
+                            النتيجة حسب الطالب
                         </button>
                         <button class="btn btn-outline-primary" onclick="showSection('program-results')">
-                            Item Vise Result
+                            النتيجة حسب البرنامج
                         </button>
                     </div>
                 </div>
@@ -133,14 +228,14 @@
             <!-- POSTERS SECTION -->
             <div class="row mt-4" id="poster-section">
                 <div class="col-12 text-center text-muted mb-3">
-                    <p>Posters Area</p>
+                    <p>معرض الملصقات</p>
                 </div>
 
                 <!-- Poster 1 -->
                 <div class="col-md-4 mb-3">
                     <a href="#" target="_blank" class="poster-link">
                         <div class="poster-card">
-                            <img src="poster1.jpg" alt="Poster 1">
+                            <img src="img/1.jpeg" alt="Coming Soon">
                             <div class="poster-overlay">
                                 <span>ملصق ١</span>
                             </div>
@@ -152,7 +247,7 @@
                 <div class="col-md-4 mb-3">
                     <a href="#" target="_blank" class="poster-link">
                         <div class="poster-card">
-                            <img src="poster2.jpg" alt="Poster 2">
+                            <img src="img/2.jpg" alt="Poster 2">
                             <div class="poster-overlay">
                                 <span>ملصق ٢</span>
                             </div>
@@ -175,14 +270,17 @@
             
             <!-- FEEDBACK BUTTON -->
             <div class="text-center mt-4">
-                <a href="https://forms.google.com" target="_blank" class="btn btn-outline-success w-100">
+                <a href="https://forms.gle/f9WVydy6C8nBYGJN9" target="_blank" class="btn btn-outline-success w-100">
                     <i class="fas fa-comment-dots"></i> تقديم ملاحظات (Feedback)
                 </a>
             </div>
 
             <!-- CREDIT AT THE END OF HOME -->
-            <div class="text-center mt-4 text-muted small">
-                Developed and Designed by Uvais.
+            <div class="site-credit mx-auto mt-4">
+                <div class="site-credit-inner">
+                    <div class="credit-title"></div>
+                    <div class="credit-sub">Developed &amp; Designed by <strong>Uvais</strong></div>
+                </div>
             </div>
         </div>
 

@@ -70,9 +70,11 @@ h1, h2, h3, .fest-title {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Use 1080x1350 -> 4:5 aspect ratio and make responsive */
 .poster-card img {
     width: 100%;
-    height: 230px;
+    height: auto;
+    aspect-ratio: 4 / 5; /* 1080:1350 */
     object-fit: cover;
     display: block;
 }
@@ -102,6 +104,43 @@ h1, h2, h3, .fest-title {
 .poster-link {
     text-decoration: none;
 }
+
+/* Attractive site credit (home) */
+.site-credit {
+    max-width: 420px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    background: linear-gradient(90deg, rgba(13,110,253,0.95), rgba(25,135,84,0.95));
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.site-credit-inner {
+    padding: 8px 12px;
+}
+
+.site-credit .credit-title {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: .6px;
+}
+
+.site-credit .credit-sub {
+    font-size: 0.92rem;
+    margin-top: 6px;
+    opacity: 0.95;
+}
+
+/* subtle glowing border animation */
+@keyframes creditGlow {
+    0% { box-shadow: 0 6px 12px rgba(13,110,253,0.15); }
+    50% { box-shadow: 0 10px 28px rgba(25,135,84,0.18); }
+    100% { box-shadow: 0 6px 12px rgba(13,110,253,0.15); }
+}
+.site-credit { animation: creditGlow 3.5s ease-in-out infinite; }
 
 /* Group ranking in حالة البرامج */
 .group-ranking-item {
@@ -222,4 +261,46 @@ h1, h2, h3, .fest-title {
 .print-footer span {
     font-weight: 700;
     color: #0d6efd;
+}
+
+/* Offcanvas Hamburger Menu Styling */
+.offcanvas {
+    width: 300px !important;
+}
+
+.offcanvas-header {
+    border-bottom: 3px solid var(--secondary-color);
+}
+
+.offcanvas-body {
+    padding: 0;
+}
+
+.offcanvas-body .list-group {
+    border-radius: 0;
+}
+
+.offcanvas-body .list-group-item {
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0;
+}
+
+.offcanvas-body .list-group-item a {
+    display: block;
+    padding: 14px 16px;
+    transition: all 0.3s ease;
+}
+
+.offcanvas-body .list-group-item a:hover {
+    background-color: #f0f0f0;
+    padding-right: 20px;
+}
+
+.offcanvas-body .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.offcanvas-body .list-group-item.bg-light {
+    border-bottom: 2px solid #d4ac0d !important;
 }

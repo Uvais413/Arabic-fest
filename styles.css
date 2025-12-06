@@ -17,6 +17,7 @@ h1, h2, h3, .fest-title {
     font-weight: 700;
 }
 
+/* HERO HEADER */
 .hero-section {
     background: linear-gradient(135deg, #198754 0%, #0f5132 100%);
     color: white;
@@ -25,6 +26,7 @@ h1, h2, h3, .fest-title {
     text-align: center;
 }
 
+/* CARDS */
 .card {
     border: none;
     border-radius: 15px;
@@ -42,6 +44,7 @@ h1, h2, h3, .fest-title {
     border-right: 4px solid var(--primary-color);
 }
 
+/* NAV PILLS */
 .nav-pills .nav-link.active {
     background-color: var(--primary-color);
 }
@@ -50,18 +53,20 @@ h1, h2, h3, .fest-title {
     color: #333;
 }
 
+/* BADGES */
 .badge-custom {
     font-size: 0.9em;
     padding: 0.5em 0.8em;
 }
 
+/* CHART */
 .chart-container {
     position: relative;
     height: 250px;
     width: 100%;
 }
 
-/* Posters */
+/* POSTERS */
 .poster-card {
     position: relative;
     border-radius: 15px;
@@ -70,11 +75,10 @@ h1, h2, h3, .fest-title {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Use 1080x1350 -> 4:5 aspect ratio and make responsive */
 .poster-card img {
     width: 100%;
     height: auto;
-    aspect-ratio: 4 / 5; /* 1080:1350 */
+    aspect-ratio: 4 / 5;
     object-fit: cover;
     display: block;
 }
@@ -98,14 +102,13 @@ h1, h2, h3, .fest-title {
     color: #fff;
     font-weight: 700;
     font-family: 'Amiri', serif;
-    letter-spacing: 1px;
 }
 
 .poster-link {
     text-decoration: none;
 }
 
-/* Attractive site credit (home) */
+/* SITE CREDIT */
 .site-credit {
     max-width: 420px;
     border-radius: 12px;
@@ -117,21 +120,9 @@ h1, h2, h3, .fest-title {
     text-align: center;
 }
 
-.site-credit-inner {
-    padding: 8px 12px;
-}
-
-.site-credit .credit-title {
-    font-family: 'Amiri', serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: .6px;
-}
-
 .site-credit .credit-sub {
     font-size: 0.92rem;
     margin-top: 6px;
-    opacity: 0.95;
 }
 
 /* subtle glowing border animation */
@@ -142,7 +133,7 @@ h1, h2, h3, .fest-title {
 }
 .site-credit { animation: creditGlow 3.5s ease-in-out infinite; }
 
-/* Group ranking in حالة البرامج */
+/* RANK ITEMS */
 .group-ranking-item {
     display: flex;
     justify-content: space-between;
@@ -154,7 +145,7 @@ h1, h2, h3, .fest-title {
     font-weight: 600;
 }
 
-/* PRINT STYLES */
+/* PRINT AREA (HIDDEN BY DEFAULT) */
 #print-area {
     display: none;
 }
@@ -181,7 +172,7 @@ h1, h2, h3, .fest-title {
     }
 }
 
-/* Print layout styling */
+/* PRINT STYLES */
 .print-header {
     text-align: center;
     border-bottom: 2px solid #000;
@@ -195,19 +186,13 @@ h1, h2, h3, .fest-title {
     margin: 0;
 }
 
-.print-header p {
-    margin: 4px 0 0;
-    font-size: 0.95rem;
-}
-
 .print-info {
     margin-bottom: 20px;
     border: 2px solid #000;
     padding: 10px;
     display: flex;
     justify-content: space-between;
-    font-size: 0.95rem;
-    background: #f3f6ff;
+    background: #eef5ff;
 }
 
 .print-info strong {
@@ -229,41 +214,32 @@ h1, h2, h3, .fest-title {
     border: 1px solid #000;
     padding: 8px;
     text-align: center;
-    font-size: 0.95rem;
 }
 
 .print-table th {
     background: #198754;
-    color: #ffffff;
-}
-
-.print-total-wrapper {
-    margin-top: 20px;
-    text-align: left;
+    color: white;
 }
 
 .print-total {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #d4ac0d;
-    margin-bottom: 5px;
+    color: var(--secondary-color);
 }
 
-.print-date {
-    font-size: 0.9rem;
-}
-
+/* PRINT FOOTER */
 .print-footer {
-    margin-top: 50px;
+    margin-top: 40px;
     text-align: center;
     font-size: 0.9rem;
 }
+
 .print-footer span {
-    font-weight: 700;
     color: #0d6efd;
+    font-weight: 700;
 }
 
-/* Offcanvas Hamburger Menu Styling */
+/* OFFCANVAS MENU */
 .offcanvas {
     width: 300px !important;
 }
@@ -272,35 +248,23 @@ h1, h2, h3, .fest-title {
     border-bottom: 3px solid var(--secondary-color);
 }
 
-.offcanvas-body {
-    padding: 0;
-}
-
-.offcanvas-body .list-group {
-    border-radius: 0;
-}
-
 .offcanvas-body .list-group-item {
     border: none;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #ebebeb;
     padding: 0;
 }
 
 .offcanvas-body .list-group-item a {
     display: block;
-    padding: 14px 16px;
-    transition: all 0.3s ease;
+    padding: 14px;
+    transition: all 0.25s ease;
 }
 
 .offcanvas-body .list-group-item a:hover {
     background-color: #f0f0f0;
-    padding-right: 20px;
-}
-
-.offcanvas-body .list-group-item:last-child {
-    border-bottom: none;
+    padding-right: 22px;
 }
 
 .offcanvas-body .list-group-item.bg-light {
-    border-bottom: 2px solid #d4ac0d !important;
+    border-bottom: 2px solid var(--secondary-color) !important;
 }

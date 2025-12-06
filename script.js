@@ -51,14 +51,13 @@ const PROGRAMS = [
 /********************************
  * 3. GLOBAL STATE
  ********************************/
-let results = [];          // all results from Firebase
-let eventStatus = {};      // { programName: {conducted:bool, published:bool} }
+let results = [];
+let eventStatus = {};
 let currentStudentModalId = null;
 let groupChartInstance = null;
-let eventBarChartInstance = null;
 
 /********************************
- * 4. INIT ON LOAD
+ * 4. INITIALIZATION
  ********************************/
 window.addEventListener('load', () => {
   setupThemeToggle();
@@ -70,7 +69,7 @@ window.addEventListener('load', () => {
 });
 
 /********************************
- * 5. THEME TOGGLE
+ * 5. THEME MANAGEMENT
  ********************************/
 function setupThemeToggle() {
   const themeToggle = document.getElementById('themeToggle');
@@ -85,115 +84,13 @@ function setupThemeToggle() {
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
     const isDark = document.body.classList.contains('dark');
-    themeToggle.innerHTML = isDark
-      ? '<i class="fas fa-sun"></i>'
-      : '<i class="fas fa-moon"></i>';
+    themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
   });
 }
 
 /********************************
- * 6. AUTH LISTENER (ADMIN DASHBOARD)
- ********************************/
-function setupAuthListener() {
-  const loginCard = document.getElementById('admin-login');
-  const dash = document.getElementById('admin-dashboard');
-
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      if (loginCard) loginCard.classList.add('d-none');
-      if (dash) dash.classList.remove('d-none');
-      renderAdminResultsTable();
-      renderEventStatusAdmin();
-    } else {
-      if (dash) dash.classList.add('d-none');
-      if (loginCard) loginCard.classList.remove('d-none');
-    }
-  });
-}
-
-function adminLogin() {
-  const email = document.getElementById('admin-email').value.trim();
-  const pass  = document.getElementById('admin-pass').value.trim();
-  const errorEl = document.getElementById('login-error');
-
-  auth.signInWithEmailAndPassword(email, pass)
-    .then(() => {
-      if (errorEl) errorEl.classList.add('d-none');
-    })
-    .catch(() => {
-      if (errorEl) errorEl.classList.remove('d-none');
-    });
-}
-
-function adminLogout() {
-  auth.signOut();
-}
-
-/********************************
- * 7. REALTIME DATABASE LISTENERS
- ********************************/
-function setupRealtimeListeners() {
-  // Results
-  db.ref('results').on('value', snapshot => {
-    const data = snapshot.val() || {};
-    results = Object.entries(data).map(([id, val]) => ({ id, ...val }));
-    refreshViews();
-  });
-
-  // Events (conducted + published)
-  db.ref('events').on('value', snapshot => {
-    const data = snapshot.val() || {};
-    eventStatus = {};
-    PROGRAMS.forEach(p => {
-      const row = data[p] || {};
-      eventStatus[p] = {
-        conducted: !!row.conducted,
-        published: !!row.published
-      };
-    });
-    refreshViews();
-    renderEventStatusAdmin();
-  });
-}
-
-function refreshViews() {
-  renderDashboard();
-  if (!document.getElementById('student-results').classList.contains('d-none')) {
-    renderStudentList();
-  }
-  if (!document.getElementById('program-results').classList.contains('d-none')) {
-    renderProgramList();
-  }
-  renderAdminResultsTable();
-}
-
-/********************************
- * 8. HELPERS
- ********************************/
-function getGroupName(code) {
-  const g = GROUPS.find(g => g.id === code);
-  return g ? g.name : '';
-}
-
-// Only published results are visible to students / dashboard
-function getPublishedResults() {
-  return results.filter(r => {
-    const st = eventStatus[r.program];
-    return st && st.published;
-  });
-}
-
-// Medal icons
-function getMedalIcon(position) {
-  if (position === 0) return '<i class="fas fa-medal medal-gold"></i>';
-  if (position === 1) return '<i class="fas fa-medal medal-silver"></i>';
-  if (position === 2) return '<i class="fas fa-medal medal-bronze"></i>';
-  return (position + 1) + '.';
-}
-
-/********************************
- * 9. VIEW LOGIC / NAVIGATION
+ * 6. NAVIGATION & SECTIONS
  ********************************/
 function showSection(sectionId) {
   document.querySelectorAll('.content-section').forEach(el => el.classList.add('d-none'));
@@ -225,40 +122,179 @@ function closeOffcanvas() {
 }
 
 /********************************
+ * 7. ADMIN AUTHENTICATION
+ ********************************/
+function setupAuthListener() {
+  const loginCard = document.getElementById('admin-login');
+  const dash = document.getElementById('admin-dashboard');
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      if (loginCard) loginCard.classList.add('d-none');
+      if (dash) dash.classList.remove('d-none');
+      renderAdminResultsTable();
+      renderEventStatusAdmin();
+    } else {
+      if (dash) dash.classList.add('d-none');
+      if (loginCard) loginCard.classList.remove('d-none');
+    }
+  });
+}
+
+function adminLogin() {
+  const email = document.getElementById('admin-email').value.trim();
+  const pass = document.getElementById('admin-pass').value.trim();
+  const errorEl = document.getElementById('login-error');
+
+  auth.signInWithEmailAndPassword(email, pass)
+    .then(() => {
+      if (errorEl) errorEl.classList.add('d-none');
+    })
+    .catch(() => {
+      if (errorEl) errorEl.classList.remove('d-none');
+    });
+}
+
+function adminLogout() {
+  auth.signOut();
+}
+
+/********************************
+ * 8. FIREBASE REALTIME LISTENERS
+ ********************************/
+function setupRealtimeListeners() {
+  db.ref('results').on('value', snapshot => {
+    const data = snapshot.val() || {};
+    results = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+    refreshViews();
+  });
+
+  db.ref('events').on('value', snapshot => {
+    const data = snapshot.val() || {};
+    eventStatus = {};
+    PROGRAMS.forEach(p => {
+      const row = data[p] || {};
+      eventStatus[p] = {
+        conducted: !!row.conducted,
+        published: !!row.published
+      };
+    });
+    refreshViews();
+    renderEventStatusAdmin();
+  });
+}
+
+function refreshViews() {
+  renderDashboard();
+  if (!document.getElementById('student-results').classList.contains('d-none')) {
+    renderStudentList();
+  }
+  if (!document.getElementById('program-results').classList.contains('d-none')) {
+    renderProgramList();
+  }
+  renderAdminResultsTable();
+}
+
+/********************************
+ * 9. UTILITY HELPERS
+ ********************************/
+function getGroupName(code) {
+  const g = GROUPS.find(g => g.id === code);
+  return g ? g.name : '';
+}
+
+function getPublishedResults() {
+  return results.filter(r => {
+    const st = eventStatus[r.program];
+    return st && st.published;
+  });
+}
+
+function getMedalIcon(position) {
+  if (position === 0) return '<i class="fas fa-medal medal-gold"></i>';
+  if (position === 1) return '<i class="fas fa-medal medal-silver"></i>';
+  if (position === 2) return '<i class="fas fa-medal medal-bronze"></i>';
+  return (position + 1) + '.';
+}
+
+function getStudentById(id) {
+  return STUDENTS.find(s => s.id == id);
+}
+
+function getProgramStatus(program) {
+  return eventStatus[program] || { conducted: false, published: false };
+}
+
+/********************************
  * 10. DASHBOARD & CHARTS
  ********************************/
 function renderDashboard() {
-  const publishedResults = getPublishedResults();
+  renderGroupChart();
+  renderProgressBars();
+  renderGroupRanking();
+  renderTopStudents();
+  renderAllStudentsGrouped();
+}
 
-  // Group totals
+function renderGroupChart() {
+  const publishedResults = getPublishedResults();
   let groupScores = { ta: 0, sad: 0 };
+  
   publishedResults.forEach(r => {
-    const s = STUDENTS.find(st => st.id == r.studentId);
+    const s = getStudentById(r.studentId);
     if (s) groupScores[s.group] += parseFloat(r.mark);
   });
 
-  // Doughnut chart
   const chartCanvas = document.getElementById('groupChart');
-  if (chartCanvas) {
-    const ctx = chartCanvas.getContext('2d');
-    if (groupChartInstance) groupChartInstance.destroy();
+  if (!chartCanvas) return;
 
-    groupChartInstance = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: [GROUPS[0].name, GROUPS[1].name],
-        datasets: [{
-          data: [groupScores.ta, groupScores.sad],
-          backgroundColor: [GROUPS[0].color, GROUPS[1].color]
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
+  const ctx = chartCanvas.getContext('2d');
+  if (groupChartInstance) groupChartInstance.destroy();
+
+  groupChartInstance = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: [GROUPS[0].name, GROUPS[1].name],
+      datasets: [{
+        data: [groupScores.ta, groupScores.sad],
+        backgroundColor: [GROUPS[0].color, GROUPS[1].color]
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+}
+
+function renderProgressBars() {
+  const totalEvents = PROGRAMS.length;
+  const conductedCount = PROGRAMS.filter(p => getProgramStatus(p).conducted).length;
+  const publishedCount = PROGRAMS.filter(p => getProgramStatus(p).published).length;
+  const conductedPercent = totalEvents ? Math.round((conductedCount / totalEvents) * 100) : 0;
+  const publishedPercent = totalEvents ? Math.round((publishedCount / totalEvents) * 100) : 0;
+
+  const pBar = document.getElementById('event-progress-bar');
+  if (pBar) {
+    pBar.style.width = conductedPercent + '%';
+    pBar.textContent = conductedPercent + '%';
   }
 
-  // Group ranking & leader
+  const pubBar = document.getElementById('publish-progress-bar');
+  if (pubBar) {
+    pubBar.style.width = publishedPercent + '%';
+    pubBar.textContent = publishedPercent + '%';
+  }
+}
+
+function renderGroupRanking() {
+  const publishedResults = getPublishedResults();
+  let groupScores = { ta: 0, sad: 0 };
+  
+  publishedResults.forEach(r => {
+    const s = getStudentById(r.studentId);
+    if (s) groupScores[s.group] += parseFloat(r.mark);
+  });
+
   const rankingArray = [
-    { code: 'ta',  name: GROUPS[0].name, total: groupScores.ta },
+    { code: 'ta', name: GROUPS[0].name, total: groupScores.ta },
     { code: 'sad', name: GROUPS[1].name, total: groupScores.sad }
   ].sort((a, b) => b.total - a.total);
 
@@ -278,50 +314,10 @@ function renderDashboard() {
         </div>`;
     });
   }
+}
 
-  // Progress bar & bar chart based on conducted
-  const totalEvents = PROGRAMS.length;
-  const conductedCount = PROGRAMS.filter(p => eventStatus[p] && eventStatus[p].conducted).length;
-  const percent = totalEvents ? Math.round((conductedCount / totalEvents) * 100) : 0;
-
-  const pBar = document.getElementById('event-progress-bar');
-  if (pBar) {
-    pBar.style.width = percent + '%';
-    pBar.textContent = percent + '%';
-  }
-
-  const barCanvas = document.getElementById('eventBarChart');
-  if (barCanvas) {
-    const ctx2 = barCanvas.getContext('2d');
-    if (eventBarChartInstance) eventBarChartInstance.destroy();
-
-    const values = PROGRAMS.map(p => (eventStatus[p] && eventStatus[p].conducted) ? 100 : 0);
-
-    eventBarChartInstance = new Chart(ctx2, {
-      type: 'bar',
-      data: {
-        labels: PROGRAMS.map(p => p.split(' ')[0]),
-        datasets: [{
-          data: values,
-          backgroundColor: values.map(v => v === 100 ? '#198754' : '#d4ac0d')
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 100,
-            ticks: { stepSize: 25 }
-          }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
-  }
-
-  // Top 4 students
+function renderTopStudents() {
+  const publishedResults = getPublishedResults();
   const studentTotals = STUDENTS.map(s => {
     const total = publishedResults
       .filter(r => r.studentId == s.id)
@@ -330,20 +326,18 @@ function renderDashboard() {
   }).sort((a, b) => b.total - a.total).slice(0, 4);
 
   const topList = document.getElementById('top-students-list');
-  if (topList) {
-    topList.innerHTML = '';
-    studentTotals.forEach((s, index) => {
-      topList.innerHTML += `
-        <div class="d-flex justify-content-between border-bottom py-2">
-          <span>${getMedalIcon(index)} ${s.name}
-            <small class="text-muted"> (${getGroupName(s.group)})</small>
-          </span>
-          <span class="badge bg-success rounded-pill">${s.total}</span>
-        </div>`;
-    });
-  }
+  if (!topList) return;
 
-  renderAllStudentsGrouped();
+  topList.innerHTML = '';
+  studentTotals.forEach((s, index) => {
+    topList.innerHTML += `
+      <div class="d-flex justify-content-between border-bottom py-2">
+        <span>${getMedalIcon(index)} ${s.name}
+          <small class="text-muted"> (${getGroupName(s.group)})</small>
+        </span>
+        <span class="badge bg-success rounded-pill">${s.total}</span>
+      </div>`;
+  });
 }
 
 function renderAllStudentsGrouped() {
@@ -373,14 +367,14 @@ function renderAllStudentsGrouped() {
 }
 
 /********************************
- * 11. STUDENT RESULTS
+ * 11. STUDENT RESULTS PAGE
  ********************************/
 function renderStudentList() {
   const container = document.getElementById('student-list-container');
   if (!container) return;
 
   container.innerHTML = '';
-  const search = (document.getElementById('search-student').value || '').toLowerCase();
+  const search = (document.getElementById('search-student')?.value || '').toLowerCase();
   const publishedResults = getPublishedResults();
 
   const studentData = STUDENTS.map(s => {
@@ -414,7 +408,7 @@ function filterStudents() {
 
 function openStudentModal(id) {
   currentStudentModalId = id;
-  const student = STUDENTS.find(s => s.id == id);
+  const student = getStudentById(id);
   if (!student) return;
 
   const publishedResults = getPublishedResults();
@@ -441,7 +435,7 @@ function openStudentModal(id) {
 }
 
 /********************************
- * 12. PROGRAM RESULTS (ITEM-WISE)
+ * 12. PROGRAM RESULTS PAGE
  ********************************/
 function renderProgramList() {
   const container = document.getElementById('program-list-container');
@@ -450,11 +444,9 @@ function renderProgramList() {
   container.innerHTML = '';
 
   PROGRAMS.forEach(prog => {
-    const st = eventStatus[prog] || { conducted: false, published: false };
+    const st = getProgramStatus(prog);
     const isPublished = st.published;
-
-    const progAll = results.filter(r => r.program === prog);
-    const progPublished = progAll.filter(r => isPublished);
+    const progPublished = results.filter(r => r.program === prog && isPublished);
 
     let html = `
       <div class="col-md-6 mb-4">
@@ -469,7 +461,7 @@ function renderProgramList() {
     if (isPublished && progPublished.length > 0) {
       const sorted = progPublished.slice().sort((a, b) => b.mark - a.mark);
       sorted.forEach(r => {
-        const sName = STUDENTS.find(s => s.id == r.studentId)?.name || 'Unknown';
+        const sName = getStudentById(r.studentId)?.name || 'Unknown';
         html += `
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <div>
@@ -489,7 +481,7 @@ function renderProgramList() {
 }
 
 /********************************
- * 13. ADMIN FUNCTIONS
+ * 13. ADMIN PANEL FUNCTIONS
  ********************************/
 function setupAdminDropdowns() {
   const pSelect = document.getElementById('res-program');
@@ -507,18 +499,17 @@ function setupAdminDropdowns() {
 }
 
 function addResult() {
-  const program   = document.getElementById('res-program').value;
+  const program = document.getElementById('res-program').value;
   const studentId = document.getElementById('res-student').value;
-  const place     = document.getElementById('res-place').value;
-  const grade     = document.getElementById('res-grade').value;
-  const mark      = document.getElementById('res-mark').value;
+  const place = document.getElementById('res-place').value;
+  const grade = document.getElementById('res-grade').value;
+  const mark = document.getElementById('res-mark').value;
 
   const ref = db.ref('results').push();
   ref.set({ program, studentId, place, grade, mark })
     .then(() => {
       alert('تمت إضافة النتيجة');
-      const form = document.getElementById('result-form');
-      if (form) form.reset();
+      document.getElementById('result-form').reset();
       document.getElementById('res-mark').value = 0;
     })
     .catch(err => {
@@ -543,7 +534,7 @@ function renderAdminResultsTable() {
   tbody.innerHTML = '';
   const sorted = results.slice().reverse();
   sorted.forEach(r => {
-    const sName = STUDENTS.find(s => s.id == r.studentId)?.name || 'Unknown';
+    const sName = getStudentById(r.studentId)?.name || 'Unknown';
     tbody.innerHTML += `
       <tr>
         <td>${r.program}</td>
@@ -561,7 +552,7 @@ function renderEventStatusAdmin() {
 
   list.innerHTML = '';
   PROGRAMS.forEach(p => {
-    const st = eventStatus[p] || { conducted: false, published: false };
+    const st = getProgramStatus(p);
     const conductedChecked = st.conducted ? 'checked' : '';
     const publishedChecked = st.published ? 'checked' : '';
     const baseId = p.replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
@@ -586,7 +577,7 @@ function renderEventStatusAdmin() {
 }
 
 function toggleEventFlag(programName, flag) {
-  const st = eventStatus[programName] || { conducted: false, published: false };
+  const st = getProgramStatus(programName);
   const current = !!st[flag];
   db.ref('events/' + programName + '/' + flag).set(!current)
     .catch(err => {
@@ -599,18 +590,18 @@ function toggleEventFlag(programName, flag) {
  * 14. PRINT FUNCTION
  ********************************/
 function printStudentResult() {
-  const s = STUDENTS.find(st => st.id == currentStudentModalId);
+  const s = getStudentById(currentStudentModalId);
   if (!s) return;
 
   const publishedResults = getPublishedResults();
   const sResults = publishedResults.filter(r => r.studentId == s.id);
   const total = sResults.reduce((sum, r) => sum + parseFloat(r.mark), 0);
 
-  document.getElementById('print-name').innerText  = s.name;
+  document.getElementById('print-name').innerText = s.name;
   document.getElementById('print-group').innerText = getGroupName(s.group);
-  document.getElementById('print-id').innerText    = s.id;
+  document.getElementById('print-id').innerText = s.id;
   document.getElementById('print-total').innerText = total;
-  document.getElementById('print-date').innerText  = new Date().toLocaleString();
+  document.getElementById('print-date').innerText = new Date().toLocaleString();
 
   const tbody = document.getElementById('print-tbody');
   tbody.innerHTML = '';

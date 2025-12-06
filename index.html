@@ -150,15 +150,21 @@
                              <div id="group-ranking" class="mb-3"></div>
 
                              <hr>
-                             <label>نسبة اكتمال النتائج:</label>
+                             <label>إتمام البرنامج</label>
                              <div class="progress mt-2" style="height: 25px;">
                                 <div id="event-progress-bar" class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">0%</div>
                              </div>
 
-                             <!-- PROGRAM COMPLETION BAR CHART -->
+                             <hr>
+                             <label>نشر النتيجة:</label>
+                             <div class="progress mt-2" style="height: 25px;">
+                                <div id="publish-progress-bar" class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">0%</div>
+                             </div>
+
+                             <!-- PROGRAM COMPLETION BAR CHART 
                              <div class="chart-container-small mt-3">
                                 <canvas id="eventBarChart"></canvas>
-                             </div>
+                             </div> -->
                         </div>
                     </div>
                 </div>
@@ -222,6 +228,17 @@
                         </div>
                     </a>
                 </div>
+
+                <div class="col-md-4 mb-3">
+                    <a href="#" target="_blank" class="poster-link">
+                        <div class="poster-card">
+                            <img src="img/3.jpg" alt="Poster 3">
+                            <div class="poster-overlay">
+                                <span>ملصق ٣</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
             
             <!-- FEEDBACK BUTTON -->
@@ -260,7 +277,7 @@
                             <li class="list-group-item">محمد عاصف</li>
                             <li class="list-group-item">صفوان</li>
                             <li class="list-group-item">محمد أنشد</li>
-                            <li class="list-group-item">محمد شهل. تي.وي</li>
+                            <li class="list-group-item">محمد شهل. تي.في</li>
                             <li class="list-group-item">محمد نسيب</li>
                         </ul>
                     </div>
@@ -308,7 +325,7 @@
                 <h4 class="text-center mb-3">تسجيل دخول المشرف</h4>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" id="admin-email" class="form-control" dir="ltr" placeholder="Admin login Id">
+                    <input type="email" id="admin-email" class="form-control" dir="ltr" placeholder="مدخل خاص بالمسؤول فقط">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Password</label>
@@ -390,8 +407,8 @@
                                     <tr>
                                         <th>البرنامج</th>
                                         <th>الطالب</th>
-                                        <th>Grade</th>
-                                        <th>Mark</th>
+                                        <th>الدرجة</th>
+                                        <th>العلامة</th>
                                         <th>حذف</th>
                                     </tr>
                                 </thead>
@@ -424,8 +441,8 @@
                             <tr>
                                 <th>البرنامج</th>
                                 <th>المركز</th>
-                                <th>Grade</th>
-                                <th>Mark</th>
+                                <th>الدرجة</th>
+                                <th>العلامة</th>
                             </tr>
                         </thead>
                         <tbody id="modal-results-body"></tbody>
@@ -460,8 +477,8 @@
                     <th>#</th>
                     <th>البرنامج</th>
                     <th>المركز</th>
-                    <th>Grade</th>
-                    <th>Mark</th>
+                    <th>الدرجة</th>
+                    <th>العلامة</th>
                 </tr>
             </thead>
             <tbody id="print-tbody"></tbody>

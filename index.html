@@ -22,13 +22,23 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
         <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-kaaba me-2"></i> مهرجان الضاد
-            </a>
-            <!-- Only Hamburger Menu Button -->
-            <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" aria-controls="sideMenu">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div class="d-flex align-items-center">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-kaaba me-2"></i> مهرجان الضاد
+                </a>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <!-- DARK MODE TOGGLE -->
+                <button id="themeToggle" class="btn btn-light me-2" type="button" title="الوضع الليلي / النهاري">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <!-- Hamburger -->
+                <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" aria-controls="sideMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -101,7 +111,7 @@
         <!-- HOME SECTION -->
         <div id="home" class="content-section">
             <!-- ABOUT SECTION -->
-            <div class="alert alert-light border text-center mb-4">
+            <div class="alert alert-light border text-center mb-4 fade-in">
                 <h5><i class="fas fa-info-circle text-success"></i> عن المهرجان</h5>
                 <p class="mb-2">
                     في اليوم العالمي للغة العربية (18 ديسمبر) نقيم مهرجان اللغة العربية لطلاب المرحلة التمهيدية تحت رعاية نادي اللغة العربية N.S.A.
@@ -117,8 +127,8 @@
             <!-- DASHBOARD ROW -->
             <div class="row mb-4">
                 <!-- GROUP POINTS CHART -->
-                <div class="col-md-6">
-                    <div class="card h-100">
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 fade-in">
                         <div class="card-header bg-white fw-bold text-center">حالة النقاط (الفرق)</div>
                         <div class="card-body d-flex justify-content-center align-items-center">
                             <div class="chart-container">
@@ -128,9 +138,9 @@
                     </div>
                 </div>
 
-                <!-- EVENT STATUS + GROUP GRAND MARKS -->
-                <div class="col-md-6">
-                    <div class="card h-100">
+                <!-- EVENT STATUS + GROUP GRAND MARKS + BAR CHART -->
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 fade-in">
                         <div class="card-header bg-white fw-bold text-center">حالة البرامج</div>
                         <div class="card-body">
                              <h3 class="text-center text-success mb-1" id="leading-group-name">...</h3>
@@ -144,13 +154,18 @@
                              <div class="progress mt-2" style="height: 25px;">
                                 <div id="event-progress-bar" class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">0%</div>
                              </div>
+
+                             <!-- PROGRAM COMPLETION BAR CHART -->
+                             <div class="chart-container-small mt-3">
+                                <canvas id="eventBarChart"></canvas>
+                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- ALL STUDENTS GROUP WISE (HOME CARD) -->
-            <div id="all-students-grouped" class="card mb-3">
+            <div id="all-students-grouped" class="card mb-3 fade-in">
                 <div class="card-header bg-info text-white fw-bold text-center">جميع الطلاب حسب الفريق</div>
                 <div class="card-body" id="all-students-grouped-body">
                     <!-- Filled by script.js -->
@@ -158,7 +173,7 @@
             </div>
 
             <!-- TOP STUDENTS -->
-            <div class="card">
+            <div class="card fade-in">
                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                     <span><i class="fas fa-crown text-warning"></i> نجوم بارزة</span>
                     <button class="btn btn-sm btn-outline-light" onclick="showSection('student-results')">عرض الكل</button>
@@ -288,20 +303,22 @@
         <!-- ADMIN SECTION -->
         <div id="admin" class="content-section d-none">
             
-            <div id="admin-login" class="card p-4 mx-auto" style="max-width: 400px;">
-                <h4 class="text-center">تسجيل دخول المشرف</h4>
+            <!-- ADMIN LOGIN (FIREBASE AUTH) -->
+            <div id="admin-login" class="card p-4 mx-auto" style="max-width: 420px;">
+                <h4 class="text-center mb-3">تسجيل دخول المشرف</h4>
                 <div class="mb-3">
-                    <label>User ID</label>
-                    <input type="text" id="admin-user" class="form-control" dir="ltr">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="admin-email" class="form-control" dir="ltr" placeholder="muhammeduvaisap786@gmail.com">
                 </div>
                 <div class="mb-3">
-                    <label>Passcode</label>
-                    <input type="password" id="admin-pass" class="form-control" dir="ltr">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="admin-pass" class="form-control" dir="ltr" placeholder="••••••••">
                 </div>
                 <button class="btn btn-success w-100" onclick="adminLogin()">دخول</button>
-                <p id="login-error" class="text-danger text-center mt-2 d-none">بيانات خاطئة</p>
+                <p id="login-error" class="text-danger text-center mt-2 d-none">بيانات الدخول غير صحيحة</p>
             </div>
 
+            <!-- ADMIN DASHBOARD -->
             <div id="admin-dashboard" class="d-none">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4>لوحة التحكم</h4>
@@ -351,17 +368,21 @@
                     </div>
                 </div>
                 
-                <!-- EVENT STATUS SWITCHES -->
+                <!-- EVENT STATUS SWITCHES (Conducted + Publish) -->
                 <div class="card mb-4">
-                    <div class="card-header">حالة البرامج (Event Status)</div>
+                    <div class="card-header">حالة البرامج (إتمام / نشر)</div>
                     <div class="card-body">
+                        <p class="small text-muted mb-2">
+                            <strong>إتمام البرنامج</strong> لتحديث نسبة الإنجاز والرسم البياني،
+                            و<strong>نشر النتيجة</strong> لإظهار النتائج للطلاب واحتساب النقاط.
+                        </p>
                         <div id="event-status-list"></div>
                     </div>
                 </div>
 
                 <!-- ENTERED RESULTS TABLE -->
                 <div class="card">
-                    <div class="card-header">النتائج المدخلة</div>
+                    <div class="card-header">كل النتائج (المخزنة في النظام)</div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-sm">
@@ -369,7 +390,8 @@
                                     <tr>
                                         <th>البرنامج</th>
                                         <th>الطالب</th>
-                                        <th>النقاط</th>
+                                        <th>Grade</th>
+                                        <th>Mark</th>
                                         <th>حذف</th>
                                     </tr>
                                 </thead>
@@ -458,6 +480,12 @@
     <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Firebase (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <script src="script.js"></script>
 
 </body>

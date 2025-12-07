@@ -3,27 +3,9 @@
 
   <url>
     <loc>https://arabic-fest.vercel.app/</loc>
+    <lastmod>2025-12-07</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://arabic-fest.vercel.app/#student-results</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://arabic-fest.vercel.app/#program-results</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://arabic-fest.vercel.app/#group-students</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://arabic-fest.vercel.app/#admin</loc>
-    <priority>0.5</priority>
   </url>
 
 </urlset>
